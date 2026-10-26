@@ -1,15 +1,22 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config"
 
 import app from './app';
 
-const PORT = process.env.PORT ? parseInt(process.env.PORT) : 5000;
+const PORT = Number(process.env.PORT ?? 5000);
 const HOST = '0.0.0.0';
 
-app.listen(PORT, HOST, () => {
-    console.log("==================================================");
-    console.log(`🚀 Server meroket di: http://${HOST}:${PORT}`);
-    console.log(`📁 Static file di: http://${HOST}:${PORT}/uploads`)
-    console.log("==================================================");
+if(!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
+    throw new Error("PORT must be a number between 1 and 65535");
+}
 
+const server = app.listen(PORT, HOST, () => {
+    console.log(`🚀 Server meroket di: http://${HOST}:${PORT}`)
 })
+
+function shutdown(signal:string) {
+    console.log(`${signal} diterima: Menutup Server 🟢🟠🔴`)
+    server.close(() => process.exit(0))
+}
+
+process.on("SIGINT", () => shutdown("SIGNINT"));
+process.on("SIGTERM", () => shutdown("SIGTERM"))
