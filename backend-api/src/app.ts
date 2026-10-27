@@ -4,6 +4,8 @@ import morgan from "morgan";
 import path from "path";
 import type {  NextFunction, Request,  Response } from "express";
 
+import productRoutes from "../src/routes/product.route";
+
 const app = express();
 
 const allowedOrigins = (process.env.CORS_ORIGIN ?? "http://localhost:5173")
@@ -33,6 +35,7 @@ app.get("/", (_req: Request, res: Response) => {
 })
 
 // APPROUTER AREA
+app.use("/api/v1/products", productRoutes);
 
 app.use((_req: Request, res: Response) => {
     res.status(404).json({
