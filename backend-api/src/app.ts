@@ -5,6 +5,7 @@ import path from "path";
 import type {  NextFunction, Request,  Response } from "express";
 
 import productRoutes from "../src/routes/product.route";
+import authRoutes from "../src/routes/auth.route";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.get("/", (_req: Request, res: Response) => {
 })
 
 // APPROUTER AREA
+app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/products", productRoutes);
 
 app.use((_req: Request, res: Response) => {

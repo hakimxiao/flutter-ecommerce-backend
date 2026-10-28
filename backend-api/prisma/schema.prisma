@@ -21,3 +21,20 @@ model Product {
 
     @@map("products")
 }
+
+enum UserRole {
+    CUSTOMER
+    ADMIN
+}
+
+model User {
+    id            Int      @id @default(autoincrement())
+    name          String?
+    email         String   @unique
+    password_hash String
+    role          UserRole @default(CUSTOMER)
+    created_at    DateTime @default(now())
+    updated_at    DateTime @updatedAt
+
+    @@map("users")
+}
